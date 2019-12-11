@@ -1,0 +1,74 @@
+{
+  "type": "object",
+  "properties": {
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When was this entry created?"
+    },
+    "created_by": {
+      "type": "string",
+      "description": "Who submitted these answers (name, or identifier)"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Who are these answers about (name or identifier)"
+    },
+    "answers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string",
+            "description": "Question, as worded in the form"
+          },
+          "answer": {
+            "type": "string",
+            "description": "Answer (value) captured"
+          },
+          "sentiment": {
+            "type": "string",
+            "enum": [
+              "postive",
+              "negative",
+              "neutral",
+              "unknown"
+            ],
+            "description": "Whether this answer carries an emotional value"
+          },
+          "topic": {
+            "type": "string",
+            "description": "The topic to which this question belongs"
+          },
+          "subtopic": {
+            "type": "string",
+            "description": "Optional sub-topic to which this question belongs"
+          }
+        },
+        "required": [
+          "question",
+          "answer",
+          "topic"
+        ]
+      },
+      "description": "List of answers to questions in the form"
+    },
+    "form_id": {
+      "type": "string",
+      "description": "Form identifier with version"
+    },
+    "submission_id": {
+      "type": "string",
+      "description": "UUID referencing the submission of these answers"
+    }
+  },
+  "required": [
+    "created_at",
+    "answers",
+    "form_id",
+    "submission_id",
+    "created_by",
+    "subject"
+  ]
+}

@@ -1,46 +1,37 @@
 openapi: 3.0.0
 info:
-  title: Forstering and Adoption Diary
-  description: |
-    This is a Fostering and Adoption server.
-  version: 1.0.0
-externalDocs:
-  description: Find out more about Swagger
-  url: http://swagger.io
+  description: This is an early draft of an API specification permitting a 3rd party supplier's application to retrieve records related to a set of children under care by the given local authority. Each local authority gets assigned an API key which the allows them to retrieve entries relevant to their business.
+  version: "1.0.0"
+  title: Fostering and Adoption Diary
+  termsOfService: N/A
+  contact:
+    name: Jan Szumiec
+    email: jan.szumiec@digital.education.gov.uk
 servers:
-- url: https://virtserver.swaggerhub.com/dfs-fna/getChildDiary/1.0.0
-  description: SwaggerHub API Auto Mocking
-- url: https://dfs-fna.swagger.io/v2
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/dfs-fna/getChildDiary/1.0.0
 paths:
-  /diary_entry:
+  /diary_entries:
     get:
       summary: Retrieve a list of diary entries, starting with a particular timestamp.
-      description: This API is for ISVs to consume Logs after a timestamp.  The API
-        assumes that the parent, child, LA, social workers mapping in the app and
-        only relevant Logs are returned
+      description: This API is for ISVs to consume Logs after a timestamp.  The API assumes that the parent, child, LA, social workers mapping in the app and only relevant Logs are returned 
       operationId: getDiaryEntries
       parameters:
-      - name: since
-        in: query
-        description: From when should we consume the diary logs.   The API-Key says
-          who it is, so that logs for people that this api-key has access to after
-          the timestamp passed is the payload of the API.
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          format: date-time
-      - name: page
-        in: query
-        description: Which page of records to retrieve (100 records per page)
-        required: false
-        style: form
-        explode: true
-        schema:
-          type: integer
+        - name: since
+          in: query
+          description: From when should we consume the diary logs.   The API-Key says who it is, so that logs for people that this api-key has access to after the timestamp passed is the payload of the API.
+          required: true
+          schema:
+            type: string
+            format: date-time
+            example: "11/11/1980 01:01:23Z"
+        - name: page
+          in: query
+          description: Which page of records to retrieve (100 records per page)
+          schema:
+            type: integer
       responses:
-        "200":
+        '200':
           description: successful operation
           content:
             application/json:
@@ -48,19 +39,14 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Diary'
-        "400":
+        '400':
           description: Invalid status value
       security:
-      - bearerAuth: []
+        - bearerAuth: []
 components:
   schemas:
     Diary:
-      required:
-      - payload
-      type: object
-      properties:
-        payload:
-          type: string
+      $ref: "Diary.json"
   securitySchemes:
     bearerAuth:
       type: http
